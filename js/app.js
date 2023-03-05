@@ -167,7 +167,7 @@ window.addEventListener('load', async () => {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
     const result = await cryptogram.methods.verifySolution().call();
-    const guessed = await cryptogram.methods.getGuessedWord().call();
+    const guessed = await cryptogram.methods.playerSolution().call();
     document.getElementById("result").textContent = result;
     document.getElementById("guessed").textContent = `You guessed: ${guessed}`;
   }
