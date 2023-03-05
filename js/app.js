@@ -166,7 +166,7 @@ window.addEventListener('load', async () => {
   async function submitSolution(event) {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
-    const result = await cryptogram.methods.checkSolution(solution).call();
+    const result = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.getGuessedWord().call();
     document.getElementById("result").textContent = result;
     document.getElementById("guessed").textContent = `You guessed: ${guessed}`;
