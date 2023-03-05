@@ -166,10 +166,26 @@ window.addEventListener('load', async () => {
   async function submitSolution(event) {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
-    const result = await cryptogram.methods.verifySolution().call();
-    const guessed = await cryptogram.methods.playerSolution().call();
-    document.getElementById("result").textContent = result;
+    const guessed = await cryptogram.methods.getGuessedWord().call();
+    let resultHtml = "";
+  
+    for (let i = 0; i < encryptedMessage.length; i++) {
+      const encryptedChar = encryptedMessage[i];
+      const guessedChar = guessed[i];
+      const solutionChar = solution[i];
+      if (guessedChar === " ") {
+        resultHtml += " ";
+      } else if (solutionChar === guessedChar) {
+        resultHtml += `<span style="color: green">${guessedChar}</span>`;
+      } else {
+        resultHtml += `<span style="color: red">${solutionChar}</span>`;
+      }
+    }
+  
+    document.getElementById("result").innerHTML = resultHtml;
     document.getElementById("guessed").textContent = `You guessed: ${guessed}`;
+    document.getElementById("encrypted").textContent = `Encrypted text: ${encryptedMessage}`;
   }
+  
   document.getElementById("submit").addEventListener("click", submitSolution);
   
