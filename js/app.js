@@ -168,26 +168,20 @@ window.addEventListener('load', async () => {
     const isCorrect = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.playerSolution().call();
     const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
-
+  
     // Clear any existing message
     const messageContainer = document.getElementById("message");
     messageContainer.innerHTML = "";
-
-    // Check if the guessed word is too long
-    if (guessed.length > encryptedMessage.length) {
-      messageContainer.textContent = "Invalid guess. The length of the guess is too long.";
-      return;
-    }
-
+  
     // Iterate through the encrypted message and guessed word
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
       const guessedLetter = guessed.charAt(i);
-
+  
       // Create a span element for each letter
       const span = document.createElement("span");
       span.classList.add("letter");
-
+  
       if (letter === " ") {
         // Add a space
         span.textContent = " ";
@@ -201,17 +195,35 @@ window.addEventListener('load', async () => {
         // Add an underscore for an unguessed letter
         span.textContent = "_";
       }
-
+  
       // Add the span element to the message container
       messageContainer.appendChild(span);
     }
-
+  
     // Show a message indicating if the guess was correct or not
     const result = document.getElementById("result");
     if (isCorrect) {
       result.textContent = "Correct!";
     } else {
       result.textContent = "Incorrect. Keep trying!";
+      // Add the original encrypted message with correctly guessed letters
+      const guessedMessageContainer = document.getElementById("guessed");
+      guessedMessageContainer.textContent = "";
+      for (let i = 0; i < encryptedMessage.length; i++) {
+        const letter = encryptedMessage.charAt(i);
+        const guessedLetter = guessed.charAt(i);
+  
+        if (letter === " ") {
+          // Add a space
+          guessedMessageContainer.textContent += " ";
+        } else if (guessedLetter !== "_") {
+          // Add the correctly guessed letter
+          guessedMessageContainer.textContent += guessedLetter;
+        } else {
+          // Add the encrypted letter
+          guessedMessageContainer.textContent += "_";
+        }
+      }
     }
   }  
   
