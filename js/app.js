@@ -13,7 +13,7 @@ window.addEventListener('load', async () => {
       console.log('No web3 provider detected');
     }
     startApp();
-  });  
+  });
   
   //Setup contract
   const contractAddress = '0x02db90c30790f11ae8a2bf960a9bcc02437097b7'; // Replace with your contract address
@@ -160,11 +160,12 @@ window.addEventListener('load', async () => {
     else {
       console.log('No web3 provider detected');
     }
-  }  
+  }
   
   async function submitSolution(event) {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
+    await cryptogram.methods.submitSolution(solution).send({ from: web3.eth.defaultAccount });
     const isCorrect = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.playerSolution().call();
     const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
@@ -191,40 +192,4 @@ window.addEventListener('load', async () => {
       } else if (solution.includes(letter)) {
         // Add the correctly guessed letter
         span.textContent = letter;
-      } else {
-        // Add an underscore for an unguessed letter
-        span.textContent = "_";
-      }
-  
-      // Add the span element to the message container
-      messageContainer.appendChild(span);
-    }
-  
-    // Show a message indicating if the guess was correct or not
-    const result = document.getElementById("result");
-    if (isCorrect) {
-      result.textContent = "Correct!";
-    } else {
-      result.textContent = "Incorrect. Keep trying!";
-      // Add the original encrypted message with correctly guessed letters
-      const guessedMessageContainer = document.getElementById("guessed");
-      guessedMessageContainer.textContent = "";
-      for (let i = 0; i < encryptedMessage.length; i++) {
-        const letter = encryptedMessage.charAt(i);
-        const guessedLetter = guessed.charAt(i);
-  
-        if (letter === " ") {
-          // Add a space
-          guessedMessageContainer.textContent += " ";
-        } else if (guessedLetter !== "_") {
-          // Add the correctly guessed letter
-          guessedMessageContainer.textContent += guessedLetter;
-        } else {
-          // Add the encrypted letter
-          guessedMessageContainer.textContent += "_";
-        }
-      }
-    }
-  }  
-  
-  document.querySelector("form").addEventListener("submit", submitSolution);
+      } else {  
