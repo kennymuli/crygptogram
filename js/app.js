@@ -227,4 +227,4 @@ window.addEventListener('load', async () => {
     }
   }  
   
-  document.getElementById("submit").addEventListener("click", submitSolution);
+  document.querySelector("form").addEventListener("submit", submitSolution);
