@@ -163,13 +163,15 @@ window.addEventListener('load', async () => {
   };
   
   async function submitSolution(event) {
-    event.preventDefault(); // prevent form submission
+    event.preventDefault();
     console.log("submitSolution function called");
   
     const solution = document.getElementById("solution").value;
     console.log("solution:", solution);
   
-    await cryptogram.methods.submitSolution(solution).send({ from: web3.eth.defaultAccount });
+    const accounts = await web3.eth.getAccounts();
+    await cryptogram.methods.submitSolution(solution).send({ from: accounts[0] });
+  
     console.log("solution submitted to smart contract");
   
     const isCorrect = await cryptogram.methods.verifySolution().call();
