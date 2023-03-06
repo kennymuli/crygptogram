@@ -164,12 +164,22 @@ window.addEventListener('load', async () => {
   
   async function submitSolution(event) {
     event.preventDefault();
+    console.log("submitSolution function called");
+  
     const solution = document.getElementById("solution").value;
+    console.log("solution:", solution);
+  
     await cryptogram.methods.submitSolution(solution).send({ from: web3.eth.defaultAccount });
+    console.log("solution submitted to smart contract");
+  
     const isCorrect = await cryptogram.methods.verifySolution().call();
+    console.log("isCorrect:", isCorrect);
+  
     const guessed = await cryptogram.methods.playerSolution().call();
+    console.log("guessed:", guessed);
+  
     const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
-    console.log("Encrypted message:", encryptedMessage);
+    console.log("encryptedMessage:", encryptedMessage);
   
     // Clear any existing message
     const messageContainer = document.getElementById("message");
@@ -179,11 +189,11 @@ window.addEventListener('load', async () => {
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
       const guessedLetter = guessed.charAt(i);
-    
+  
       // Create a span element for each letter
       const span = document.createElement("span");
       span.classList.add("letter");
-    
+  
       if (letter === " ") {
         // Add a space
         span.textContent = " ";
@@ -197,8 +207,8 @@ window.addEventListener('load', async () => {
         // Add an underscore for an incorrect guess
         span.textContent = "_";
       }
-    
+  
       // Append the span element to the message container
       messageContainer.appendChild(span);
     }
-  };
+  };  
