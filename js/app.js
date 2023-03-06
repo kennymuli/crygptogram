@@ -166,26 +166,42 @@ window.addEventListener('load', async () => {
   async function submitSolution(event) {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
+    const isCorrect = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.getGuessedWord().call();
-    let resultHtml = "";
+    const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
   
+    // Clear any existing message
+    const messageContainer = document.getElementById("message");
+    messageContainer.innerHTML = "";
+  
+    // Add an underscore for any unguessed character, or the correct letter otherwise
     for (let i = 0; i < encryptedMessage.length; i++) {
-      const encryptedChar = encryptedMessage[i];
-      const guessedChar = guessed[i];
-      const solutionChar = solution[i];
-      if (guessedChar === " ") {
-        resultHtml += " ";
-      } else if (solutionChar === guessedChar) {
-        resultHtml += `<span style="color: green">${guessedChar}</span>`;
+      const letter = encryptedMessage.charAt(i);
+      const guessedLetter = guessed.charAt(i);
+  
+      if (letter === " ") {
+        // Add a space
+        messageContainer.innerHTML += "&nbsp;";
+      } else if (guessedLetter !== "_") {
+        // Add the correctly guessed letter
+        messageContainer.innerHTML += guessedLetter;
+      } else if (solution.includes(letter)) {
+        // Add the correctly guessed letter
+        messageContainer.innerHTML += letter;
       } else {
-        resultHtml += `<span style="color: red">${solutionChar}</span>`;
+        // Add an underscore for an unguessed letter
+        messageContainer.innerHTML += "_";
       }
     }
   
-    document.getElementById("result").innerHTML = resultHtml;
-    document.getElementById("guessed").textContent = `You guessed: ${guessed}`;
-    document.getElementById("encrypted").textContent = `Encrypted text: ${encryptedMessage}`;
-  }
+    // Show a message indicating if the guess was correct or not
+    const result = document.getElementById("result");
+    if (isCorrect) {
+      result.textContent = "Correct!";
+    } else {
+      result.textContent = "Incorrect. Keep trying!";
+    }
+  }  
   
   document.getElementById("submit").addEventListener("click", submitSolution);
   
