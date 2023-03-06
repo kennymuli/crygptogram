@@ -174,6 +174,10 @@ window.addEventListener('load', async () => {
     const messageContainer = document.getElementById("message");
     messageContainer.innerHTML = "";
   
+    // Create a new message container
+    const newMessageContainer = document.createElement("p");
+    newMessageContainer.classList.add("message");
+  
     // Iterate through the encrypted message and guessed word
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
@@ -197,9 +201,12 @@ window.addEventListener('load', async () => {
         span.textContent = "_";
       }
   
-      // Add the span element to the message container
-      messageContainer.appendChild(span);
+      // Add the span element to the new message container
+      newMessageContainer.appendChild(span);
     }
+  
+    // Replace the existing message container with the new one
+    messageContainer.parentNode.replaceChild(newMessageContainer, messageContainer);
   
     // Show a message indicating if the guess was correct or not
     const result = document.getElementById("result");
@@ -209,6 +216,7 @@ window.addEventListener('load', async () => {
       result.textContent = "Incorrect. Keep trying!";
     }
   }
+  
   
   
   document.getElementById("submit").addEventListener("click", submitSolution);
