@@ -160,7 +160,7 @@ window.addEventListener('load', async () => {
     else {
       console.log('No web3 provider detected');
     }
-  }
+  };
   
   async function submitSolution(event) {
     event.preventDefault();
@@ -178,18 +178,28 @@ window.addEventListener('load', async () => {
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
       const guessedLetter = guessed.charAt(i);
-  
+    
       // Create a span element for each letter
       const span = document.createElement("span");
       span.classList.add("letter");
-  
+    
       if (letter === " ") {
         // Add a space
         span.textContent = " ";
-      } else if (guessedLetter !== "_") {
-        // Add the correctly guessed letter
+      } else if (guessedLetter !== "_" && guessedLetter !== letter) {
+        // Add the incorrectly guessed letter
         span.textContent = guessedLetter;
       } else if (solution.includes(letter)) {
         // Add the correctly guessed letter
         span.textContent = letter;
-      } else {  
+      } else {
+        // Add an underscore for an incorrect guess
+        span.textContent = "_";
+      }
+    
+      // Append the span element to the message container
+      messageContainer.appendChild(span);
+    }
+  };
+
+  console.log("Encrypted message:", encryptedMessage);
