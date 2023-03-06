@@ -145,6 +145,10 @@ window.addEventListener('load', async () => {
         .then(() => {
           cryptogram = new web3.eth.Contract(contractABI, contractAddress);
           console.log('Cryptogram contract:', cryptogram);
+          
+          // Display the encrypted message
+          const encryptedMessage = document.getElementById("encrypted-message");
+          encryptedMessage.textContent = cryptogram.methods.encryptedMessage().call();
         })
         .catch((error) => {
           console.log('User denied account access');
@@ -155,6 +159,10 @@ window.addEventListener('load', async () => {
       web3 = new Web3(window.web3.currentProvider);
       cryptogram = new web3.eth.Contract(contractABI, contractAddress);
       console.log('Cryptogram contract:', cryptogram);
+      
+      // Display the encrypted message
+      const encryptedMessage = document.getElementById("encrypted-message");
+      encryptedMessage.textContent = cryptogram.methods.encryptedMessage().call();
     }
     // Non-dapp browsers...
     else {
@@ -174,24 +182,31 @@ window.addEventListener('load', async () => {
     const messageContainer = document.getElementById("message");
     messageContainer.innerHTML = "";
   
-    // Add an underscore for any unguessed character, or the correct letter otherwise
+    // Iterate through the encrypted message and guessed word
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
       const guessedLetter = guessed.charAt(i);
   
+      // Create a span element for each letter
+      const span = document.createElement("span");
+      span.classList.add("letter");
+  
       if (letter === " ") {
         // Add a space
-        messageContainer.innerHTML += "&nbsp;";
+        span.textContent = " ";
       } else if (guessedLetter !== "_") {
         // Add the correctly guessed letter
-        messageContainer.innerHTML += guessedLetter;
+        span.textContent = guessedLetter;
       } else if (solution.includes(letter)) {
         // Add the correctly guessed letter
-        messageContainer.innerHTML += letter;
+        span.textContent = letter;
       } else {
         // Add an underscore for an unguessed letter
-        messageContainer.innerHTML += "_";
+        span.textContent = "_";
       }
+  
+      // Add the span element to the message container
+      messageContainer.appendChild(span);
     }
   
     // Show a message indicating if the guess was correct or not
