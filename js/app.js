@@ -145,10 +145,6 @@ window.addEventListener('load', async () => {
         .then(() => {
           cryptogram = new web3.eth.Contract(contractABI, contractAddress);
           console.log('Cryptogram contract:', cryptogram);
-          
-          // Display the encrypted message
-          const encryptedMessage = document.getElementById("encrypted-message");
-          encryptedMessage.textContent = cryptogram.methods.encryptedMessage().call();
         })
         .catch((error) => {
           console.log('User denied account access');
@@ -159,15 +155,15 @@ window.addEventListener('load', async () => {
       web3 = new Web3(window.web3.currentProvider);
       cryptogram = new web3.eth.Contract(contractABI, contractAddress);
       console.log('Cryptogram contract:', cryptogram);
-      
-      // Display the encrypted message
-      const encryptedMessage = document.getElementById("encrypted-message");
-      encryptedMessage.textContent = cryptogram.methods.encryptedMessage().call();
     }
     // Non-dapp browsers...
     else {
       console.log('No web3 provider detected');
     }
+  
+    // Display the encrypted message
+    const encryptedMessage = document.getElementById("encrypted-message");
+    encryptedMessage.textContent = cryptogram.methods.encryptedMessage().call();
   }  
   
   // Submit solution
