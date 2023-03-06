@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
   });
   
   //Setup contract
-  const contractAddress = const contractAddress = '0x3e939B17D66c5E8486F3221afa9F0B4811a23A17'; // Replace with your contract address
+  const contractAddress = '0x3e939B17D66c5E8486F3221afa9F0B4811a23A17'; // Replace with your contract address
   const contractABI = [
     {
       "inputs": [
