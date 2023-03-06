@@ -169,6 +169,7 @@ window.addEventListener('load', async () => {
     const isCorrect = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.playerSolution().call();
     const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
+    console.log("Encrypted message:", encryptedMessage);
   
     // Clear any existing message
     const messageContainer = document.getElementById("message");
@@ -201,5 +202,3 @@ window.addEventListener('load', async () => {
       messageContainer.appendChild(span);
     }
   };
-
-  console.log("Encrypted message:", encryptedMessage);
