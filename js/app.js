@@ -16,21 +16,8 @@ window.addEventListener('load', async () => {
   });
   
   //Setup contract
-  const contractAddress = '0x02db90c30790f11ae8a2bf960a9bcc02437097b7'; // Replace with your contract address
+  const contractAddress = const contractAddress = '0x3e939B17D66c5E8486F3221afa9F0B4811a23A17'; // Replace with your contract address
   const contractABI = [
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_playerSolution",
-          "type": "string"
-        }
-      ],
-      "name": "submitSolution",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
     {
       "inputs": [
         {
@@ -46,13 +33,6 @@ window.addEventListener('load', async () => {
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "inputs": [],
-      "name": "withdraw",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
     },
     {
       "inputs": [],
@@ -107,6 +87,19 @@ window.addEventListener('load', async () => {
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_playerSolution",
+          "type": "string"
+        }
+      ],
+      "name": "submitSolution",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "substitutionCipher",
       "outputs": [
@@ -130,6 +123,13 @@ window.addEventListener('load', async () => {
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ]; // Update with your contract ABI
