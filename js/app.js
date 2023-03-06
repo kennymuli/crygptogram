@@ -162,31 +162,32 @@ window.addEventListener('load', async () => {
     }
   }  
   
-  // Submit solution
   async function submitSolution(event) {
     event.preventDefault();
     const solution = document.getElementById("solution").value;
     const isCorrect = await cryptogram.methods.verifySolution().call();
     const guessed = await cryptogram.methods.playerSolution().call();
     const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
-  
+
     // Clear any existing message
     const messageContainer = document.getElementById("message");
     messageContainer.innerHTML = "";
-  
-    // Create a new message container
-    const newMessageContainer = document.createElement("p");
-    newMessageContainer.classList.add("message");
-  
+
+    // Check if the guessed word is too long
+    if (guessed.length > encryptedMessage.length) {
+      messageContainer.textContent = "Invalid guess. The length of the guess is too long.";
+      return;
+    }
+
     // Iterate through the encrypted message and guessed word
     for (let i = 0; i < encryptedMessage.length; i++) {
       const letter = encryptedMessage.charAt(i);
       const guessedLetter = guessed.charAt(i);
-  
+
       // Create a span element for each letter
       const span = document.createElement("span");
       span.classList.add("letter");
-  
+
       if (letter === " ") {
         // Add a space
         span.textContent = " ";
@@ -200,14 +201,11 @@ window.addEventListener('load', async () => {
         // Add an underscore for an unguessed letter
         span.textContent = "_";
       }
-  
-      // Add the span element to the new message container
-      newMessageContainer.appendChild(span);
+
+      // Add the span element to the message container
+      messageContainer.appendChild(span);
     }
-  
-    // Replace the existing message container with the new one
-    messageContainer.parentNode.replaceChild(newMessageContainer, messageContainer);
-  
+
     // Show a message indicating if the guess was correct or not
     const result = document.getElementById("result");
     if (isCorrect) {
@@ -215,9 +213,6 @@ window.addEventListener('load', async () => {
     } else {
       result.textContent = "Incorrect. Keep trying!";
     }
-  }
-  
-  
+  }  
   
   document.getElementById("submit").addEventListener("click", submitSolution);
-  
