@@ -163,7 +163,7 @@ window.addEventListener('load', async () => {
   };
   
   async function submitSolution(event) {
-    event.preventDefault();
+    event.preventDefault(); // prevent form submission
     console.log("submitSolution function called");
   
     const solution = document.getElementById("solution").value;
