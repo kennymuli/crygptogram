@@ -221,20 +221,23 @@ async function submitSolution(event) {
   }
 };
 
-  function checkSolutionLength(event) {
-    const solution = document.getElementById("solution").value;
-    const encryptedMessage = document.getElementById("message").textContent;
+function checkSolutionLength(event) {
+  const solution = document.getElementById("solution").value;
+  const encryptedMessage = document.getElementById("message").textContent;
+  const submitButton = document.getElementById("submit-button");
+  console.log(encryptedMessage);
+  console.log(encryptedMessage.length);
 
-    if (solution.length !== encryptedMessage.length) {
-      const errorMessage = document.getElementById("error-message");
-      errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
-      document.getElementById("submit-button").disabled = true;
-    } else {
-      const errorMessage = document.getElementById("error-message");
-      errorMessage.textContent = "";
-      document.getElementById("submit-button").disabled = false;
-    }
-  };
+  if (solution.length !== encryptedMessage.length) {
+    const errorMessage = document.getElementById("error-message");
+    errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
+    submitButton.disabled = true;
+  } else {
+    const errorMessage = document.getElementById("error-message");
+    errorMessage.textContent = "";
+    submitButton.disabled = false;
+  }
+};
 
 const solutionInput = document.getElementById("solution");
 solutionInput.addEventListener('input', checkSolutionLength);
