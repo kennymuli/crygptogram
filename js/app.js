@@ -222,19 +222,19 @@ async function submitSolution(event) {
 };
 
   function checkSolutionLength(event) {
-    const solution = document.getElementById("solution").value;
-    const encryptedMessage = document.getElementById("message").textContent.replace(/ /g, '');
-  
-    if (solution.length !== encryptedMessage.length) {
-      const errorMessage = document.getElementById("error-message");
-      errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
-      document.getElementById("submit-button").disabled = true;
-    } else {
-      const errorMessage = document.getElementById("error-message");
-      errorMessage.textContent = "";
-      document.getElementById("submit-button").disabled = false;
-    }
-  };  
-  
-  const form = document.querySelector('form');
-  form.addEventListener('submit', checkSolutionLength);
+  const solution = document.getElementById("solution").value;
+  const encryptedMessage = document.getElementById("message").textContent.replace(/ /g, '');
+
+  if (solution.length !== encryptedMessage.length) {
+    const errorMessage = document.getElementById("error-message");
+    errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
+    document.getElementById("submit-button").disabled = true;
+  } else {
+    const errorMessage = document.getElementById("error-message");
+    errorMessage.textContent = "";
+    document.getElementById("submit-button").disabled = false;
+  }
+};
+
+const solutionInput = document.getElementById("solution");
+solutionInput.addEventListener('input', checkSolutionLength);
