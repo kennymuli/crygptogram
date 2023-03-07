@@ -145,6 +145,8 @@ function startApp() {
       .then(() => {
         cryptogram = new web3.eth.Contract(contractABI, contractAddress);
         console.log('Cryptogram contract:', cryptogram);
+        const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
+        document.getElementById("message").textContent = encryptedMessage;
       })
       .catch((error) => {
         console.log('User denied account access');
@@ -155,6 +157,8 @@ function startApp() {
     web3 = new Web3(window.web3.currentProvider);
     cryptogram = new web3.eth.Contract(contractABI, contractAddress);
     console.log('Cryptogram contract:', cryptogram);
+    const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
+    document.getElementById("message").textContent = encryptedMessage;
   }
   // Non-dapp browsers...
   else {
