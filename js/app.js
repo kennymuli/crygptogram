@@ -169,7 +169,7 @@ async function submitSolution(event) {
   const solution = document.getElementById("solution").value;
   console.log("solution:", solution);
 
-  const encryptedMessage = document.getElementById("message").textContent.replace(/ /g, '');
+  const encryptedMessage = document.getElementById("message").textContent;
   console.log("encryptedMessage:", encryptedMessage);
 
   if (solution.length !== encryptedMessage.length) {
