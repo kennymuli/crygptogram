@@ -19,6 +19,8 @@ contract Cryptogram {
         if (verifySolution()) {
             payable(msg.sender).transfer(reward);
             playerSolution = "";
+        } else {
+            playerSolution = "";
         }
     }
 

@@ -16,21 +16,8 @@ window.addEventListener('load', async () => {
   });
   
   //Setup contract
-  const contractAddress = '0xe076b255dF906dfe5737886D38D013145823c9aF'; // Replace with your contract address
+  const contractAddress = '0x1cb5095d68ccfbaac0492bec286080064c9973c5'; // Replace with your contract address
   const contractABI = [
-    {
-      "inputs": [
-        {
-          "internalType": "string",
-          "name": "_playerSolution",
-          "type": "string"
-        }
-      ],
-      "name": "submitSolution",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
     {
       "inputs": [
         {
@@ -46,13 +33,6 @@ window.addEventListener('load', async () => {
       ],
       "stateMutability": "nonpayable",
       "type": "constructor"
-    },
-    {
-      "inputs": [],
-      "name": "withdraw",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
     },
     {
       "inputs": [],
@@ -107,6 +87,19 @@ window.addEventListener('load', async () => {
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "_playerSolution",
+          "type": "string"
+        }
+      ],
+      "name": "submitSolution",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
       "name": "substitutionCipher",
       "outputs": [
@@ -130,6 +123,13 @@ window.addEventListener('load', async () => {
         }
       ],
       "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "withdraw",
+      "outputs": [],
+      "stateMutability": "nonpayable",
       "type": "function"
     }
   ]; // Update with your contract ABI
@@ -169,6 +169,15 @@ window.addEventListener('load', async () => {
     const solution = document.getElementById("solution").value;
     console.log("solution:", solution);
   
+    const encryptedMessage = document.getElementById("message").textContent.replace(/ /g, '');
+    console.log("encryptedMessage:", encryptedMessage);
+  
+    if (solution.length !== encryptedMessage.length) {
+      const errorMessage = document.getElementById("error-message");
+      errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
+      return;
+    }
+  
     const accounts = await web3.eth.getAccounts();
     await cryptogram.methods.submitSolution(solution).send({ from: accounts[0] });
   
@@ -179,9 +188,6 @@ window.addEventListener('load', async () => {
   
     const guessed = await cryptogram.methods.playerSolution().call();
     console.log("guessed:", guessed);
-  
-    const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
-    console.log("encryptedMessage:", encryptedMessage);
   
     // Clear any existing message
     const messageContainer = document.getElementById("message");
@@ -214,3 +220,17 @@ window.addEventListener('load', async () => {
       messageContainer.appendChild(span);
     }
   };  
+
+  function checkSolutionLength(event) {
+    const solution = document.getElementById("solution").value;
+    const encryptedMessage = document.getElementById("message").textContent.replace(/ /g, '');
+  
+    if (solution.length !== encryptedMessage.length) {
+      event.preventDefault();
+      const errorMessage = document.getElementById("error-message");
+      errorMessage.textContent = "Your current guess doesn't match the length of the encrypted message.";
+    }
+  };
+  
+  const form = document.querySelector('form');
+  form.addEventListener('submit', checkSolutionLength);
