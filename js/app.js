@@ -137,20 +137,19 @@ const contractABI = [
 let web3;
 let cryptogram;
 
-function startApp() {
+async function startApp() {
   // Modern dapp browsers...
   if (window.ethereum) {
     web3 = new Web3(window.ethereum);
-    window.ethereum.request({ method: 'eth_requestAccounts' })
-      .then(() => {
-        cryptogram = new web3.eth.Contract(contractABI, contractAddress);
-        console.log('Cryptogram contract:', cryptogram);
-        const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
-        document.getElementById("message").textContent = encryptedMessage;
-      })
-      .catch((error) => {
-        console.log('User denied account access');
-      });
+    try {
+      await window.ethereum.request({ method: 'eth_requestAccounts' });
+    } catch (error) {
+      console.log('User denied account access');
+    }
+    cryptogram = new web3.eth.Contract(contractABI, contractAddress);
+    console.log('Cryptogram contract:', cryptogram);
+    const encryptedMessage = await cryptogram.methods.encryptedMessage().call();
+    document.getElementById("message").textContent = encryptedMessage;
   }
   // Legacy dapp browsers...
   else if (window.web3) {
@@ -165,6 +164,7 @@ function startApp() {
     console.log('No web3 provider detected');
   }
 };
+
 
 async function submitSolution(event) {
   event.preventDefault();
