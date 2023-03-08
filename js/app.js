@@ -194,46 +194,65 @@ async function submitSolution(event) {
     return;
   }
 
-  const accounts = await web3.eth.getAccounts();
-  await cryptogram.methods.setPlayerSolution(solution).send({ from: accounts[0] }); // updated line
-
-  console.log("solution submitted to smart contract");
-
-  const isCorrect = await cryptogram.methods.verifySolution().call();
-  console.log("isCorrect:", isCorrect);
-
-  const guessed = await cryptogram.methods.playerSolution().call();
+  console.log("encryptedMessage:", encryptedMessage);
   console.log("guessed:", guessed);
+  console.log("solution:", solution);
 
-  // Clear any existing message
-  const messageContainer = document.getElementById("message");
-  messageContainer.innerHTML = "";
+  const accounts = await web3.eth.getAccounts();
 
-  // Iterate through the encrypted message and guessed word
-  for (let i = 0; i < encryptedMessage.length; i++) {
-    const letter = encryptedMessage.charAt(i);
-    const guessedLetter = guessed.charAt(i);
+  const errorMessage = document.getElementById("error-message");
+  errorMessage.textContent = "Checking your answer on-chain. One moment.";
 
-    // Create a span element for each letter
-    const span = document.createElement("span");
-    span.classList.add("letter");
+  try {
+    await cryptogram.methods.setPlayerSolution(solution).send({ from: accounts[0] });
 
-    if (letter === " ") {
-      // Add a space
-      span.textContent = " ";
-    } else if (guessedLetter !== "_" && guessedLetter !== letter) {
-      // Add the incorrectly guessed letter
-      span.textContent = guessedLetter;
-    } else if (solution.includes(letter)) {
-      // Add the correctly guessed letter
-      span.textContent = letter;
+    console.log("solution submitted to smart contract");
+
+    const isCorrect = await cryptogram.methods.verifySolution().call();
+    console.log("isCorrect:", isCorrect);
+
+    const guessed = await cryptogram.methods.playerSolution().call();
+    console.log("guessed:", guessed);
+
+    if (isCorrect) {
+      errorMessage.textContent = "Congratulations! You got the answer correct.";
     } else {
-      // Add an underscore for an incorrect guess
-      span.textContent = "_";
+      errorMessage.textContent = "Sorry, that's incorrect. You can try again!";
     }
 
-    // Append the span element to the message container
-    messageContainer.appendChild(span);
+    // Clear any existing message
+    const messageContainer = document.getElementById("message");
+    messageContainer.innerHTML = "";
+
+    // Iterate through the encrypted message and guessed word
+    for (let i = 0; i < encryptedMessage.length; i++) {
+      const letter = encryptedMessage.charAt(i);
+      const guessedLetter = guessed.charAt(i);
+
+      // Create a span element for each letter
+      const span = document.createElement("span");
+      span.classList.add("letter");
+
+      if (letter === " ") {
+        // Add a space
+        span.textContent = " ";
+      } else if (guessedLetter !== "_" && guessedLetter !== letter) {
+        // Add the incorrectly guessed letter
+        span.textContent = guessedLetter;
+      } else if (solution.includes(letter)) {
+        // Add the correctly guessed letter
+        span.textContent = letter;
+      } else {
+        // Add an underscore for an incorrect guess
+        span.textContent = "_";
+      }
+
+      // Append the span element to the message container
+      messageContainer.appendChild(span);
+    }
+  } catch (error) {
+    console.error(error);
+    errorMessage.textContent = "There was an error checking your answer on-chain. Please try again.";
   }
 };
 
