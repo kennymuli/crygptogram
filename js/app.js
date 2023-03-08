@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
 });
 
 //Setup contract
-const contractAddress = '0x7302F9D42C221C70F12cb72Fd4886C6e3cC22398'; // Replace with your contract address
+const contractAddress = '0x856742E45CD9cf56cc463ba46B245f3568D11880'; // Replace with your contract address
 const contractABI = [
 	{
 		"inputs": [
@@ -183,7 +183,7 @@ async function submitSolution(event) {
   }
 
   const accounts = await web3.eth.getAccounts();
-  await cryptogram.methods.submitSolution(solution).send({ from: accounts[0] });
+  await cryptogram.methods.setPlayerSolution(solution).send({ from: accounts[0] }); // updated line
 
   console.log("solution submitted to smart contract");
 
