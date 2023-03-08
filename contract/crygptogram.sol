@@ -15,6 +15,16 @@ contract Cryptogram {
 
     function submitSolution(string calldata _playerSolution) public {
         require(bytes(_playerSolution).length == bytes(encryptedMessage).length, "Solution length does not match encrypted message length");
+
+        uint numSpaces = 0;
+        bytes memory cipher = bytes(encryptedMessage);
+        for (uint i = 0; i < cipher.length; i++) {
+            if (cipher[i] == " ") {
+                numSpaces++;
+            }
+        }
+        require(numSpaces == countSpaces(_playerSolution), "Solution does not contain the correct number of spaces");
+
         playerSolution = _playerSolution;
         if (verifySolution()) {
             payable(msg.sender).transfer(reward);
@@ -22,6 +32,17 @@ contract Cryptogram {
         } else {
             playerSolution = "";
         }
+    }
+
+    function countSpaces(string memory str) internal pure returns (uint) {
+        bytes memory bytesStr = bytes(str);
+        uint numSpaces = 0;
+        for (uint i = 0; i < bytesStr.length; i++) {
+            if (bytesStr[i] == " ") {
+                numSpaces++;
+            }
+        }
+        return numSpaces;
     }
 
     function verifySolution() public view returns (bool) {
