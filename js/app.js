@@ -178,7 +178,6 @@ async function startApp() {
   }
 };
 
-
 async function submitSolution(event) {
   event.preventDefault();
   console.log("submitSolution function called");
