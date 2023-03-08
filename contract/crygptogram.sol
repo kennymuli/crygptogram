@@ -13,6 +13,10 @@ contract Cryptogram {
         substitutionCipher = _substitutionCipher;
     }
 
+    function setPlayerSolution(string calldata solution) public {
+        playerSolution = solution;
+    }
+
     function submitSolution(string calldata _playerSolution) public {
         require(bytes(_playerSolution).length == bytes(encryptedMessage).length, "Solution length does not match encrypted message length");
         if (bytes(_playerSolution).length > 0) {

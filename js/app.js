@@ -16,7 +16,7 @@ window.addEventListener('load', async () => {
 });
 
 //Setup contract
-const contractAddress = '0x856742E45CD9cf56cc463ba46B245f3568D11880'; // Replace with your contract address
+const contractAddress = '0xe01A39e613dfe2aC90c90067B7B7b409f26B14F6'; // Replace with your contract address
 const contractABI = [
 	{
 		"inputs": [
@@ -84,6 +84,19 @@ const contractABI = [
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "solution",
+				"type": "string"
+			}
+		],
+		"name": "setPlayerSolution",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
